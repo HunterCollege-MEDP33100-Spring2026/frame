@@ -11,6 +11,52 @@ let totalItems = 10; // change this if you do more than 10 items
 
 async function getData() {
     // YOUR CODE HERE
+    async function getData() {
+
+    frame.innerHTML = "Loading...";
+
+    const query = `
+        query {
+            pokemons(limit: 10, offset: 0) {
+                results {
+                    name
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch("https://graphql-pokeapi.vercel.app/api/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ query: query })
+        });
+
+        const data = await response.json();
+
+        frame.innerHTML = "";
+
+        const pokemonList = data.data.pokemons.results;
+
+        for (let i = 0; i < pokemonList.length; i++) {
+            const li = document.createElement("li");
+            li.textContent = pokemonList[i].name;
+
+            // so click system works
+            if (i == 0) {
+                li.classList.add("active");
+            }
+
+            frame.appendChild(li);
+        }
+
+    } catch (error) {
+        frame.innerHTML = "Error loading data";
+        console.log(error);
+    }
+}
 }
 
 function goToItem(index) {
