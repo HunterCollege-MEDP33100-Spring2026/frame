@@ -61,11 +61,21 @@ async function getData() {
 
 function goToItem(index) {
     const items = frame.querySelectorAll('li');
+
+    if (items.length == 0) {
+        return;
+    }
+
+    if (!items[currentItem]) {
+        currentItem = 0;
+    }
+
     items[currentItem].classList.remove('active');
-    currentItem = index;
+
+    currentItem = index % items.length;
+
     items[currentItem].classList.add('active');
 }
-
 frame.addEventListener('click', function () {
     const nextItem = (currentItem + 1) % totalItems;
     goToItem(nextItem);
