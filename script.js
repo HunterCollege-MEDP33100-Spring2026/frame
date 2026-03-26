@@ -12,19 +12,25 @@ let totalItems = 10; // change this if you do more than 10 items
 async function getData() {
     // YOUR CODE HERE
 
-    frame.innerHTML = "";
+     frame.innerHTML = "";
 
-    const loadingItem = document.createElement("li");
-    loadingItem.textContent = "Loading...";
-    loadingItem.classList.add("active");
-    frame.appendChild(loadingItem);
+    // 10 li 
+    for (let i = 0; i < 10; i++) {
+        const li = document.createElement("li");
+
+        if (i == 0) {
+            li.classList.add("active");
+        }
+
+        li.textContent = "Loading...";
+        frame.appendChild(li);
+    }
 
     const query = `
         query {
             pokemons(limit: 10, offset: 0) {
                 results {
                     name
-                    image
                 }
             }
         }
@@ -40,34 +46,15 @@ async function getData() {
         });
 
         const data = await response.json();
-
-        frame.innerHTML = "";
-
         const pokemonList = data.data.pokemons.results;
 
+        const items = frame.querySelectorAll("li");
+
         for (let i = 0; i < pokemonList.length; i++) {
-            const li = document.createElement("li");
-            const img = document.createElement("img");
-
-            img.src = pokemonList[i].image;
-            img.alt = pokemonList[i].name;
-
-            if (i == 0) {
-                li.classList.add("active");
-            }
-
-            li.appendChild(img);
-            frame.appendChild(li);
+            items[i].textContent = pokemonList[i].name;
         }
 
     } catch (error) {
-        frame.innerHTML = "";
-
-        const errorItem = document.createElement("li");
-        errorItem.textContent = "Error loading data";
-        errorItem.classList.add("active");
-        frame.appendChild(errorItem);
-
         console.log(error);
     }
 }
