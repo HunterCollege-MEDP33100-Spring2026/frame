@@ -20,6 +20,7 @@ async function getData() {
             pokemons(limit: 10, offset: 0) {
                 results {
                     name
+                    image
                 }
             }
         }
@@ -42,13 +43,16 @@ async function getData() {
 
         for (let i = 0; i < pokemonList.length; i++) {
             const li = document.createElement("li");
-            li.textContent = pokemonList[i].name;
+            const img = document.createElement("img");
 
-            // so click system works
+            img.src = pokemonList[i].image;
+            img.alt = pokemonList[i].name;
+
             if (i == 0) {
                 li.classList.add("active");
             }
 
+            li.appendChild(img);
             frame.appendChild(li);
         }
 
